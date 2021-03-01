@@ -62,3 +62,23 @@ exports.update = async (id, data) => {
 exports.delete = async (id) => {
   await Document.findByIdAndDelete(id);
 };
+
+exports.findByDistance = async (location, maxDistance, limite) => {
+  const res = await Document.aggregate([
+    {
+      $geoNear: {
+        near: {
+          type: "Point",
+          coordinates: [location.latitude, location.longitude],
+        },
+        spherical: true,
+        key: "localizacao",
+        distanceField: "distancia",
+        maxDistance: maxDistance,
+      },
+    },
+    { $limit: limite },
+  ]);
+
+  return res;
+};

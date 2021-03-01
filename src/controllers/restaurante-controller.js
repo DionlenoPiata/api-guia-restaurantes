@@ -100,3 +100,19 @@ exports.getCsv = async (req, res, next) => {
     });
   }
 };
+
+exports.findByDistance = async (req, res, next) => {
+  try {
+    const location = req.body.localizacao;
+    const maxDistance = req.body.distanciaMaxima;
+    const limite = req.body.limite;
+
+    var data = await dao.findByDistance(location, maxDistance, limite);
+
+    res.status(200).send(data);
+  } catch (e) {
+    res.status(500).send({
+      message: "Falha ao processar a requisição!",
+    });
+  }
+};

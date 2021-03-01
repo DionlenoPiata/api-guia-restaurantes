@@ -11,6 +11,11 @@ router.get("/exportar/csv", authService.isAdmin, controller.getCsv);
 router.post("/search/", authService.authorize, controller.get);
 router.post("/search/:by", authService.authorize, controller.postBy);
 router.post("/", authService.isAdmin, controller.post);
+router.post(
+  "/buscarProximos",
+  authService.authorize,
+  controller.findByDistance
+);
 router.put("/:id", authService.isAdmin, controller.put);
 router.delete("/:id", authService.isAdmin, controller.delete);
 

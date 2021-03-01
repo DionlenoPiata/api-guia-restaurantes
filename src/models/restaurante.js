@@ -26,4 +26,6 @@ const schema = new Schema({
   },
 });
 
+schema.index({ localizacao: "2dsphere" });
+
 module.exports = mongoose.model("Restaurante", schema);
