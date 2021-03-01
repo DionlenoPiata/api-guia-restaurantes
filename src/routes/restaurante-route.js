@@ -7,6 +7,7 @@ const controller = require("../controllers/restaurante-controller");
 const authService = require("../services/auth-service");
 
 router.get("/", authService.isAdmin, controller.get);
+router.get("/exportar/csv", authService.isAdmin, controller.getCsv);
 router.post("/search/", authService.authorize, controller.get);
 router.post("/search/:by", authService.authorize, controller.postBy);
 router.post("/", authService.isAdmin, controller.post);

@@ -1,5 +1,6 @@
 "use strict";
 
+const { Parser } = require("json2csv");
 const dao = require("../dao/restaurante-dao");
 
 exports.get = async (req, res, next) => {
@@ -74,6 +75,25 @@ exports.delete = async (req, res, next) => {
       message: "Removido com sucesso!",
     });
   } catch (e) {
+    res.status(500).send({
+      message: "Falha ao processar a requisição!",
+      error: e.message,
+    });
+  }
+};
+exports.getCsv = async (req, res, next) => {
+  try {
+    let restaurantes = await dao.get();
+
+    const fields = ["_id", "nome", "telefone", "descricao", "localizacao"];
+
+    const json2csv = new Parser({ fields });
+    const csv = json2csv.parse(restaurantes);
+    res.header("Content-Type", "text/csv");
+    res.attachment("restaurantes.csv");
+    return res.status(200).send(csv);
+  } catch (e) {
+    console.log("error:", e);
     res.status(500).send({
       message: "Falha ao processar a requisição!",
       error: e.message,
